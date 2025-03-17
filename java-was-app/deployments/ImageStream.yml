@@ -1,0 +1,8 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: "my-liberty-app"
+  labels:
+    app: "my-liberty-app"
+    backstage.io/kubernetes-id: "my-liberty-app"
+spec: {}

@@ -1,0 +1,33 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: "my-liberty-app"
+  labels:
+    app: "my-liberty-app"
+    backstage.io/kubernetes-id: "my-liberty-app"
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: "my-liberty-app:latest"
+  postCommit: {}
+  resources: {}
+  source:
+    git:
+      uri: "https://github.com/ocp-rhdh-poc/my-liberty-app.git"
+      ref: "master"
+    type: Git
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        namespace: openshift
+        name: nodejs:16-ubi8
+  triggers:
+    - github:
+        secret: "bWVobWVobWVo"
+      type: GitHub
+    - type: ConfigChange
+    - imageChange: {}
+      type: ImageChange

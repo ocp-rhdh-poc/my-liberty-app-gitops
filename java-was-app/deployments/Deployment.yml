@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"my-liberty-app:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"my-liberty-app\")].image"}]'
+  creationTimestamp: null
+  labels:
+    deployment: "my-liberty-app"
+    app.kubernetes.io/component: "my-liberty-app"
+    app.kubernetes.io/instance: "my-liberty-app"
+    backstage.io/kubernetes-id: "my-liberty-app"
+  name: "my-liberty-app"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: "my-liberty-app"
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+      creationTimestamp: null
+      labels:
+        deployment: "my-liberty-app"
+        backstage.io/kubernetes-id: "my-liberty-app"
+    spec:
+      containers:
+        - image: " "
+          name: "my-liberty-app"
+          resources: {}

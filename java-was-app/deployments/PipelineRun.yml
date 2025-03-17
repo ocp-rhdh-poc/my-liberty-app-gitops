@@ -1,0 +1,36 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  # generateName: "my-liberty-app-pipeline-"
+  name: "my-liberty-app-pipeline"
+  annotations:
+    chains.tekton.dev/signed: "true"
+  finalizers:
+    - chains.tekton.dev/pipelinerun
+  labels:
+    tekton.dev/pipeline: clone-build-push
+    backstage.io/kubernetes-id: "my-liberty-app"
+spec:
+  params:
+    - name: GIT_REPO
+      value: "https://github.com/ocp-rhdh-poc/my-liberty-app.git"
+    - name: IMAGE_NAME
+      value: "my-liberty-app"
+  pipelineRef:
+    name: clone-build-push
+  serviceAccountName: pipeline
+  timeout: 1h0m0s
+  workspaces:
+    - name: source-repo
+      volumeClaimTemplate:
+        metadata:
+          creationTimestamp: null
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+          storageClassName: ocs-storagecluster-cephfs
+          volumeMode: Filesystem
+        status: {}
